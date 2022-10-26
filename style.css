@@ -1,0 +1,112 @@
+* {
+  margin: 0;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/*Header*/
+
+header {
+  background-color: black;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+h1 {
+  color: white;
+  align-self: center;
+  justify-self: center;
+}
+
+header img {
+  padding: 30px;
+}
+
+
+/*footer*/
+
+
+footer {
+  background-color: black;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/*First column*/
+
+.logo {
+  width: 50%;
+  align-self: center;
+  padding-left: 10%;
+}
+
+/*Second column*/
+.aboutUs{
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.aboutUs p {
+  margin-top: 10px;
+}
+
+.aboutUs p:nth-child(4) {
+
+  position: absolute;
+  bottom:10px;
+}
+
+.socialMedia {
+  display: flex;
+  flex-direction: column;
+  grid-column: 3 / 4;
+  justify-self: end;
+  text-align: center;
+}
+
+/*third column*/
+
+.socialMedia h2 {
+  padding-top: 30px;
+  font-size: 2rem;
+  color: white;
+}
+
+.socialMedia ul {
+  padding:0;
+  list-style: none;
+}
+
+.socialMedia img {
+  width: 40%;
+}
+
+.socialMedia li {
+  margin: 10px;
+}
+
+.socialMedia li:nth-child(3) a {
+  color: white;
+  font-size: 2.5rem;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.socialMedia li:nth-child(3) img {
+  width: 15%;
+  margin-right: 10px;
+}
