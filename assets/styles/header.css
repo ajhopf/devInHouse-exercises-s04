@@ -1,0 +1,17 @@
+/*Header*/
+
+header {
+  background-color: black;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+h1 {
+  color: white;
+  align-self: center;
+  justify-self: center;
+}
+
+header img {
+  padding: 30px;
+}
