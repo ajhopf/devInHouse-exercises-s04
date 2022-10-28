@@ -1,14 +1,20 @@
 const form = document.getElementById('registrationForm');
+const operacaoForm = document.getElementById('operationsForm');
 
+/*inputs do formulario de cadastro*/
 const nameInput = document.getElementById('nameInput');
 const cpfInput = document.getElementById('cpfInput');
 const celphoneInput = document.getElementById('celphoneInput');
 const passwordInput = document.getElementById('passwordInput');
 const confirmaSenhaInput = document.getElementById('confirmaSenhaInput');
 
+/*Inputs do formulario de operação*/
+const valorInput = document.getElementById('valor');
+
 const contasDeClientes = [];
 /**/
 
+/*------------Funções para cadastro--------------*/
 const criaNumeroDeConta = () => {
   let conta = 0;
   do {
@@ -74,6 +80,7 @@ const formataCelular = celularString => {
   return celular;
 };
 
+/*Add cliente*/
 const addCliente = inputArray => {
   const [nome, cpf, celular, senha] = inputArray;
   // console.log({ nome, cpf, celular, senha });
@@ -93,7 +100,7 @@ const addCliente = inputArray => {
   adicionaMensagem(novoCliente);
   return contasDeClientes;
 };
-
+/*Mensagem após adicionar o cliente*/
 const adicionaMensagem = cliente => {
   form.innerHTML = '';
 
@@ -123,4 +130,23 @@ form.addEventListener('submit', event => {
 
     addCliente(inputValues);
   }
+});
+
+/*------------Funções para Operação--------------*/
+function desabilitaValorInput() {
+  const selectedInput = document.querySelector(
+    'input[name="operacao"]:checked'
+  );
+
+  if (selectedInput.value === 'saldo') {
+    valorInput.setAttribute('disabled', 'disabled');
+  } else {
+    valorInput.removeAttribute('disabled');
+  }
+}
+
+operacaoForm.addEventListener('submit', event => {
+  event.preventDefault();
+
+  console.log('submit operacao');
 });
