@@ -17,6 +17,63 @@ const criaNumeroDeConta = () => {
   return conta;
 };
 
+const formataCpf = cpfString => {
+  if (!cpfString.includes('.')) {
+    const cpfFormatado =
+      cpfString.slice(0, 3) +
+      '.' +
+      cpfString.slice(3, 6) +
+      '.' +
+      cpfString.slice(6, 9) +
+      '-' +
+      cpfString.slice(9, 11);
+
+    return cpfFormatado;
+  }
+
+  return cpfString;
+};
+
+/*Formatando o celular*/
+const adicionaParenteses = celularString => {
+  if (!celularString.includes('(')) {
+    const adicionaParenteses =
+      '(' + celularString.slice(0, 2) + ')' + celularString.slice(2);
+    return adicionaParenteses;
+  }
+  return celularString;
+};
+
+const adicionaEspacoAposDDD = celularString => {
+  if (!celularString.includes(' ')) {
+    const celularComEspaco =
+      celularString.slice(0, 4) + ' ' + celularString.slice(4);
+
+    return celularComEspaco;
+  }
+
+  return celularString;
+};
+
+const adicionaHifen = celularString => {
+  if (!celularString.includes('-')) {
+    const celularComHifen =
+      celularString.slice(0, 10) + '-' + celularString.slice(10);
+    return celularComHifen;
+  }
+  return celularString;
+};
+
+const formataCelular = celularString => {
+  let celular = adicionaParenteses(celularString);
+
+  celular = adicionaEspacoAposDDD(celular);
+
+  celular = adicionaHifen(celular);
+
+  return celular;
+};
+
 const addCliente = inputArray => {
   const [nome, cpf, celular, senha] = inputArray;
   // console.log({ nome, cpf, celular, senha });
@@ -61,6 +118,9 @@ form.addEventListener('submit', event => {
   ];
 
   if (passwordInput.value === confirmaSenhaInput.value) {
+    inputValues[1] = formataCpf(inputValues[1]);
+    inputValues[2] = formataCelular(inputValues[2]);
+
     addCliente(inputValues);
   }
 });
