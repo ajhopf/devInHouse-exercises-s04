@@ -137,6 +137,9 @@ form.addEventListener('submit', event => {
 });
 
 /*------------Funções para Operação--------------*/
+
+const div = document.querySelector('.message');
+
 const desabilitaValorInput = () => {
   const selectedInput = document.querySelector(
     'input[name="operacao"]:checked'
@@ -154,12 +157,12 @@ const saque = () => {
   console.log('saque');
 };
 
-const deposito = () => {
-  console.log('deposito');
-};
+const deposito = conta => {};
 
-const consultaSaldo = () => {
-  console.log('saldo');
+const consultaSaldo = conta => {
+  const saldo = contasDeClientes.find(cliente => cliente.conta === conta).saldo;
+
+  mostraSaldo(saldo);
 };
 
 /*Validações*/
@@ -172,8 +175,15 @@ const validaConta = (conta, senha) => {
   return false;
 };
 
-/*Mensagem de erro*/
-const criaMensagemDeErro = div => {
+/*Mensagens*/
+
+const mostraSaldo = saldo => {
+  const h3 = document.createElement('h3');
+  h3.innerText = `Seu saldo é de: R$${saldo}`;
+  div.appendChild(h3);
+};
+
+const criaMensagemDeErro = () => {
   div.innerHTML = '';
   const p = document.createElement('p');
   p.innerText = 'Conta e/ou senha inválida';
@@ -188,10 +198,8 @@ operacaoForm.addEventListener('submit', event => {
   const conta = parseInt(event.target.conta.value);
   const senha = event.target.senha.value;
 
-  const div = document.querySelector('.errorMessage');
-
   if (!validaConta(conta, senha)) {
-    criaMensagemDeErro(div);
+    criaMensagemDeErro();
     return;
   }
 
@@ -205,7 +213,7 @@ operacaoForm.addEventListener('submit', event => {
 
   switch (operacao) {
     case 'saldo':
-      consultaSaldo();
+      consultaSaldo(conta);
       break;
     case 'deposito':
       deposito();
