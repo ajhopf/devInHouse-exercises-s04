@@ -1,4 +1,4 @@
-const contasDeClientes = [];
+let contasDeClientes = [];
 
 /*Forms*/
 const form = document.getElementById('registrationForm');
@@ -157,7 +157,23 @@ const saque = () => {
   console.log('saque');
 };
 
-const deposito = conta => {};
+const deposito = (conta, valor) => {
+  if (!isNaN(valor) && valor > 0) {
+    let saldoAtualizado;
+
+    contasDeClientesAtualizadas = contasDeClientes.map(cliente => {
+      if (cliente.conta === conta) {
+        saldoAtualizado = cliente.saldo + valor;
+        return { ...cliente, saldo: saldoAtualizado };
+      }
+      return cliente;
+    });
+
+    contasDeClientes = contasDeClientesAtualizadas;
+
+    confirmaDeposito(saldoAtualizado);
+  }
+};
 
 const consultaSaldo = conta => {
   const saldo = contasDeClientes.find(cliente => cliente.conta === conta).saldo;
@@ -177,6 +193,12 @@ const validaConta = (conta, senha) => {
 
 /*Mensagens*/
 
+const confirmaDeposito = saldo => {
+  const h3 = document.createElement('h3');
+  h3.innerText = `Depósito efetuado com sucesso! Seu saldo atual é de: R$${saldo}`;
+  div.appendChild(h3);
+};
+
 const mostraSaldo = saldo => {
   const h3 = document.createElement('h3');
   h3.innerText = `Seu saldo é de: R$${saldo}`;
@@ -194,7 +216,7 @@ const criaMensagemDeErro = () => {
 operacaoForm.addEventListener('submit', event => {
   event.preventDefault();
 
-  const valor = parseInt(event.target.valor.value);
+  const valor = parseFloat(event.target.valor.value, 10);
   const conta = parseInt(event.target.conta.value);
   const senha = event.target.senha.value;
 
@@ -216,7 +238,7 @@ operacaoForm.addEventListener('submit', event => {
       consultaSaldo(conta);
       break;
     case 'deposito':
-      deposito();
+      deposito(conta, valor);
       break;
     case 'saque':
       saque();
