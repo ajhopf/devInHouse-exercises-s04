@@ -153,15 +153,41 @@ const desabilitaValorInput = () => {
 };
 
 /*Operações*/
-const saque = () => {
-  console.log('saque');
+const saque = (conta, valor) => {
+  if (!validaValor(valor)) {
+    criaMensagemDeErro('O valor solicitado para saque deve ser maior que 0');
+  }
+
+  const cliente = contasDeClientes.find(cliente => cliente.conta === conta);
+
+  if (valor > cliente.saldo) {
+    criaMensagemDeErro(
+      `Você não possui saldo suficiente. Seu saldo atual é de R$${cliente.saldo}`
+    );
+    return;
+  }
+
+  let saldoAtualizado;
+
+  const contasDeClientesAtualizadas = contasDeClientes.map(cliente => {
+    if (cliente.conta === conta) {
+      saldoAtualizado = cliente.saldo - valor;
+      return { ...cliente, saldo: saldoAtualizado };
+    } else {
+      return cliente;
+    }
+  });
+
+  contasDeClientes = contasDeClientesAtualizadas;
+
+  confirmaOperacao(saldoAtualizado, 'Saque');
 };
 
 const deposito = (conta, valor) => {
-  if (!isNaN(valor) && valor > 0) {
+  if (validaValor(valor)) {
     let saldoAtualizado;
 
-    contasDeClientesAtualizadas = contasDeClientes.map(cliente => {
+    const contasDeClientesAtualizadas = contasDeClientes.map(cliente => {
       if (cliente.conta === conta) {
         saldoAtualizado = cliente.saldo + valor;
         return { ...cliente, saldo: saldoAtualizado };
@@ -171,7 +197,7 @@ const deposito = (conta, valor) => {
 
     contasDeClientes = contasDeClientesAtualizadas;
 
-    confirmaDeposito(saldoAtualizado);
+    confirmaOperacao(saldoAtualizado, 'Depósito');
   }
 };
 
@@ -182,6 +208,11 @@ const consultaSaldo = conta => {
 };
 
 /*Validações*/
+
+const validaValor = valor => {
+  return !isNaN(valor) && valor > 0;
+};
+
 const validaConta = (conta, senha) => {
   const cliente = contasDeClientes.find(cliente => cliente.conta === conta);
 
@@ -193,9 +224,9 @@ const validaConta = (conta, senha) => {
 
 /*Mensagens*/
 
-const confirmaDeposito = saldo => {
+const confirmaOperacao = (saldo, operacao) => {
   const h3 = document.createElement('h3');
-  h3.innerText = `Depósito efetuado com sucesso! Seu saldo atual é de: R$${saldo}`;
+  h3.innerText = `${operacao} efetuado com sucesso! Seu saldo atual é de: R$${saldo}`;
   div.appendChild(h3);
 };
 
@@ -205,10 +236,10 @@ const mostraSaldo = saldo => {
   div.appendChild(h3);
 };
 
-const criaMensagemDeErro = () => {
+const criaMensagemDeErro = mensagem => {
   div.innerHTML = '';
   const p = document.createElement('p');
-  p.innerText = 'Conta e/ou senha inválida';
+  p.innerText = mensagem;
   div.appendChild(p);
 };
 
@@ -221,7 +252,7 @@ operacaoForm.addEventListener('submit', event => {
   const senha = event.target.senha.value;
 
   if (!validaConta(conta, senha)) {
-    criaMensagemDeErro();
+    criaMensagemDeErro('Conta e/ou senha inválida');
     return;
   }
 
@@ -241,7 +272,7 @@ operacaoForm.addEventListener('submit', event => {
       deposito(conta, valor);
       break;
     case 'saque':
-      saque();
+      saque(conta, valor);
       break;
     default:
       'Operação inválida';
