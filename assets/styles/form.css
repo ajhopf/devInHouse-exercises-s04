@@ -9,3 +9,8 @@
 #operationsForm {
   margin-top: 10px;
 }
+
+.errorMessage {
+  text-align: center;
+  color: red
+}

@@ -1,3 +1,6 @@
+const contasDeClientes = [];
+
+/*Forms*/
 const form = document.getElementById('registrationForm');
 const operacaoForm = document.getElementById('operationsForm');
 
@@ -11,7 +14,6 @@ const confirmaSenhaInput = document.getElementById('confirmaSenhaInput');
 /*Inputs do formulario de operação*/
 const valorInput = document.getElementById('valor');
 
-const contasDeClientes = [];
 /**/
 
 /*------------Funções para cadastro--------------*/
@@ -96,13 +98,12 @@ const addCliente = inputArray => {
   };
 
   contasDeClientes.push(novoCliente);
-  console.log(contasDeClientes);
   adicionaMensagem(novoCliente);
   return contasDeClientes;
 };
 /*Mensagem após adicionar o cliente*/
 const adicionaMensagem = cliente => {
-  form.innerHTML = '';
+  // form.innerHTML = '';
 
   const h2 = document.createElement('h2');
   h2.innerText = 'Conta criada com sucesso!';
@@ -113,6 +114,7 @@ const adicionaMensagem = cliente => {
   form.appendChild(p);
 };
 
+/*Formulário*/
 form.addEventListener('submit', event => {
   event.preventDefault();
 
@@ -129,11 +131,13 @@ form.addEventListener('submit', event => {
     inputValues[2] = formataCelular(inputValues[2]);
 
     addCliente(inputValues);
+  } else {
+    alert('Senhas não conferem');
   }
 });
 
 /*------------Funções para Operação--------------*/
-function desabilitaValorInput() {
+const desabilitaValorInput = () => {
   const selectedInput = document.querySelector(
     'input[name="operacao"]:checked'
   );
@@ -143,10 +147,73 @@ function desabilitaValorInput() {
   } else {
     valorInput.removeAttribute('disabled');
   }
-}
+};
 
+/*Operações*/
+const saque = () => {
+  console.log('saque');
+};
+
+const deposito = () => {
+  console.log('deposito');
+};
+
+const consultaSaldo = () => {
+  console.log('saldo');
+};
+
+/*Validações*/
+const validaConta = (conta, senha) => {
+  const cliente = contasDeClientes.find(cliente => cliente.conta === conta);
+
+  if (cliente) {
+    return cliente.senha === senha;
+  }
+  return false;
+};
+
+/*Mensagem de erro*/
+const criaMensagemDeErro = div => {
+  div.innerHTML = '';
+  const p = document.createElement('p');
+  p.innerText = 'Conta e/ou senha inválida';
+  div.appendChild(p);
+};
+
+/*Formulário*/
 operacaoForm.addEventListener('submit', event => {
   event.preventDefault();
 
-  console.log('submit operacao');
+  const valor = parseInt(event.target.valor.value);
+  const conta = parseInt(event.target.conta.value);
+  const senha = event.target.senha.value;
+
+  const div = document.querySelector('.errorMessage');
+
+  if (!validaConta(conta, senha)) {
+    criaMensagemDeErro(div);
+    return;
+  }
+
+  if (div.innerHTML) {
+    div.innerHTML = '';
+  }
+
+  const operacao = document.querySelector(
+    'input[name="operacao"]:checked'
+  ).value;
+
+  switch (operacao) {
+    case 'saldo':
+      consultaSaldo();
+      break;
+    case 'deposito':
+      deposito();
+      break;
+    case 'saque':
+      saque();
+      break;
+    default:
+      'Operação inválida';
+  }
 });
