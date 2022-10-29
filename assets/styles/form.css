@@ -1,6 +1,19 @@
-#registrationForm {
+#registrationForm, #operationsForm{
   display: flex;
   flex-direction: column;
   gap: 10px;
   align-items: center;
+  margin-bottom: 10px;
+}
+
+#operationsForm {
+  margin-top: 10px;
+}
+
+.message {
+  text-align: center; 
+}
+
+.message p {
+  color: red
 }
